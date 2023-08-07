@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import companyLogo from "../../assets/photos/company-logo.png";
 import data from "../../assets/data.json";
-import NavMenu from "../../assets/interfaces";
+import { NavMenu } from "../../assets/interfaces";
 
 export default function Header(): JSX.Element {
   const { navMenus }: { navMenus: NavMenu[] } = data;
