@@ -3,5 +3,27 @@
     { "path": "/", "label": "Home" },
     { "path": "/about", "label": "About" },
     { "path": "/contact", "label": "Contact" }
+  ],
+
+  "thData": [
+    {
+      "thName": "#"
+    },
+    {
+      "thName": "Company Name"
+    },
+    {
+      "thName": "Primary Exchange"
+    },
+    {
+      "thName": "High Source"
+    },
+
+    {
+      "thName": "Volume"
+    },
+    {
+      "thName": "Symbol"
+    }
   ]
 }
