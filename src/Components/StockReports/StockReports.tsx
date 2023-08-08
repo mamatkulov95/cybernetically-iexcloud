@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setStockData, setCurrentPage } from "../../redux/stockSlice";
+import { RootState } from "../../redux/store";
 import axios from "axios";
 import data from "../../assets/data.json";
-import { StockData } from "../../assets/interfaces";
 
 const StockReports = () => {
-  const [stockData, setStockData] = useState<StockData[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const stocksPerPage = 10;
+
+  const dispatch = useDispatch();
+  const stockData = useSelector((state: RootState) => state.stocks.stockData);
+  const currentPage = useSelector(
+    (state: RootState) => state.stocks.currentPage
+  );
+
   const { thData } = data;
 
   useEffect(() => {
@@ -15,20 +22,20 @@ const StockReports = () => {
         const apiKey = "pk_c80ea4d31daa4158b8c56c800e35f5a1";
         const url = `https://api.iex.cloud/v1/data/core/stock_collection/sector?collectionName=Technology&token=${apiKey}`;
         const response = await axios.get(url);
-        setStockData(response.data);
+        dispatch(setStockData(response.data));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchStockData();
-  }, []);
+  }, [dispatch]);
 
   const lastIndex = currentPage * stocksPerPage;
   const firstIndex = lastIndex - stocksPerPage;
   const currentStocks = stockData.slice(firstIndex, lastIndex);
 
-  const goToPage = (page: React.SetStateAction<number>) => {
-    setCurrentPage(page);
+  const goToPage = (page: number) => {
+    dispatch(setCurrentPage(page));
   };
 
   return (
