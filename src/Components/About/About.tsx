@@ -1,6 +1,6 @@
-export default function About(): JSX.Element {
+const About = (): JSX.Element => {
   return (
-    <div className=" bg-[#94D1CA] p-10 flex flex-col items-center">
+    <div className="bg-[#94D1CA] p-10 flex flex-col items-center">
       <h1 className="py-4 text-4xl font-bold text-purple-600 bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-text">
         Cybernatically Inc
       </h1>
@@ -27,4 +27,6 @@ export default function About(): JSX.Element {
       </p>
     </div>
   );
-}
+};
+
+export default About;

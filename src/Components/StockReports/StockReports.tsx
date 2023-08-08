@@ -1,12 +1,16 @@
+import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { setStockData, setCurrentPage } from "../../redux/stockSlice";
 import { RootState } from "../../redux/store";
-import axios from "axios";
 import data from "../../assets/data.json";
 
 const StockReports = () => {
   const stocksPerPage = 10;
+  const { thData } = data;
+  const apiKey = "pk_c80ea4d31daa4158b8c56c800e35f5a1";
+  const apiUrl = `https://api.iex.cloud/v1/data/core/stock_collection/sector?collectionName=Technology&token=${apiKey}`;
 
   const dispatch = useDispatch();
   const stockData = useSelector((state: RootState) => state.stocks.stockData);
@@ -14,21 +18,17 @@ const StockReports = () => {
     (state: RootState) => state.stocks.currentPage
   );
 
-  const { thData } = data;
-
   useEffect(() => {
     const fetchStockData = async () => {
       try {
-        const apiKey = "pk_c80ea4d31daa4158b8c56c800e35f5a1";
-        const url = `https://api.iex.cloud/v1/data/core/stock_collection/sector?collectionName=Technology&token=${apiKey}`;
-        const response = await axios.get(url);
+        const response = await axios.get(apiUrl);
         dispatch(setStockData(response.data));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchStockData();
-  }, [dispatch]);
+  }, [dispatch, apiUrl]);
 
   const lastIndex = currentPage * stocksPerPage;
   const firstIndex = lastIndex - stocksPerPage;
@@ -50,6 +50,7 @@ const StockReports = () => {
             ))}
           </tr>
         </thead>
+
         <tbody>
           {currentStocks.map((stock, index) => (
             <tr key={index} className="border py-4">
