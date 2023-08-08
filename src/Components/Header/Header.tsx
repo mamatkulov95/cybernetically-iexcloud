@@ -1,30 +1,24 @@
+import { RingLoader } from "react-spinners";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import companyLogo from "../../assets/photos/company-logo.png";
+
 import data from "../../assets/data.json";
 import { NavMenu } from "../../assets/interfaces";
-import { RingLoader } from "react-spinners";
+import companyLogo from "../../assets/photos/company-logo.png";
 
-export default function Header(): JSX.Element {
+function Header(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
 
+  const handleLoadingFinish = () => {
+    setIsLoading(false);
+  };
+
+  const handleLoadingStart = () => {
+    setIsLoading(true);
+    setTimeout(handleLoadingFinish, 600);
+  };
+
   const { navMenus }: { navMenus: NavMenu[] } = data;
-
-  const handleNavClick = () => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 600);
-  };
-
-  const handleLogoClick = () => {
-    setIsLoading(true);
-
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 600);
-  };
 
   return (
     <div className="flex justify-between bg-[#14162e] p-3 text-white sticky z-10 top-0">
@@ -33,15 +27,16 @@ export default function Header(): JSX.Element {
           <RingLoader color="#d337d2" loading={isLoading} size={80} />
         </div>
       )}
-      <Link to="/">
+
+      <Link to="/" onClick={handleLoadingStart}>
         <img
           className="md:block cursor-pointer sm:hidden"
           src={companyLogo}
           alt="company-logo"
           width={250}
-          onClick={handleLogoClick}
         />
       </Link>
+
       <ul
         className={`flex items-center gap-3 px-4 ${
           isLoading ? "opacity-25 pointer-events-none" : ""
@@ -49,7 +44,7 @@ export default function Header(): JSX.Element {
       >
         {navMenus.map(({ label, path }: NavMenu, index: number) => (
           <li className="hover:text-lime-600 transition-all" key={index}>
-            <Link to={path} onClick={handleNavClick}>
+            <Link to={path} onClick={handleLoadingStart}>
               {label}
             </Link>
           </li>
@@ -58,3 +53,5 @@ export default function Header(): JSX.Element {
     </div>
   );
 }
+
+export default Header;
